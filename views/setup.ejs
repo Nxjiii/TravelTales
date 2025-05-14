@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Setup Profile</title>
+    <link rel="stylesheet" href="/styles/styles.css" />
+  </head>
+  <body>
+    <div class="setup-container">
+      <h2>Complete Your Profile</h2>
+      <form id="setupForm">
+        <div class="form-group">
+          <label for="fullName">Full Name:</label>
+          <input type="text" id="fullName" name="fullName" required />
+        </div>
+
+        <div class="form-group">
+          <label for="username">Username:</label>
+          <input type="text" id="username" name="username" required />
+        </div>
+
+        <button type="submit" id="submitButton">Save Profile</button>
+      </form>
+      <%- include("partials/navbar") %>
+    </div>
+
+    <script type="module" src="/js/setupProfile.js" defer></script>
+    <script type="module" src="/js/navbar.js" defer></script>
+  </body>
+</html>

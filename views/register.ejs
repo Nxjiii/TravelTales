@@ -3,14 +3,13 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Login</title>
+    <title>Register</title>
     <link rel="stylesheet" href="/styles/styles.css" />
   </head>
   <body>
-    <%- include("partials/navbar") %>
-    <div class="login-container">
-      <h2>Login</h2>
-      <form id="loginForm">
+    <div class="register-container">
+      <h2>Register</h2>
+      <form id="registerForm">
         <div class="form-group">
           <label for="email">Email:</label>
           <input type="email" id="email" name="email" required />
@@ -21,17 +20,17 @@
           <input type="password" id="password" name="password" required />
         </div>
 
-        <button type="submit" id="submitButton">Login</button>
+        <button type="submit" id="submitButton">Register</button>
       </form>
-      <p>Don't have an account? <a href="/register">Register here</a></p>
+      <p>Already have an account? <a href="/login">Login here</a></p>
       <div id="error-message" style="color: red; margin-top: 15px"></div>
     </div>
 
     <script type="module">
-      import { loginUser } from "/js/auth.js";
+      import { registerUser } from "/js/auth.js";
 
       document
-        .getElementById("loginForm")
+        .getElementById("registerForm")
         .addEventListener("submit", async (e) => {
           e.preventDefault();
 
@@ -47,20 +46,18 @@
               return;
             }
 
-            // Show loading indication
             const submitBtn = document.getElementById("submitButton");
             const originalText = submitBtn.textContent;
-            submitBtn.textContent = "Logging in...";
+            submitBtn.textContent = "Registering...";
             submitBtn.disabled = true;
 
-            await loginUser(email, password);
+            await registerUser(email, password);
           } catch (err) {
-            console.error("Login error:", err);
-            errorMsg.textContent = err.message || "Login failed";
+            console.error("Registration error:", err);
+            errorMsg.textContent = err.message || "Registration failed";
           } finally {
-            // Restore button state if we're still on this page
             const submitBtn = document.getElementById("submitButton");
-            submitBtn.textContent = "Login";
+            submitBtn.textContent = "Register";
             submitBtn.disabled = false;
           }
         });

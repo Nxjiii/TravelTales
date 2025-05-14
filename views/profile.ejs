@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Profile</title>
+    <link rel="stylesheet" href="/styles/styles.css" />
+  </head>
+  <body class="profile">
+    <header>
+      <h1>Welcome to Your Profile, <span id="username"></span></h1>
+    </header>
+    <main>
+      <p>This is your profile page.</p>
+      <div id="profileDetails">
+        <p><strong>Username:</strong> <span id="profileUsername"></span></p>
+        <p><strong>Full Name:</strong> <span id="profileFullName"></span></p>
+      </div>
+      <button id="logoutBtn">Logout</button>
+    </main>
+
+    <%- include("partials/navbar") %>
+
+    <footer>
+      <p>&copy; 2025 TravelTales. All rights reserved.</p>
+    </footer>
+
+    <script type="module">
+      import { logoutUser } from "/js/auth.js";
+      document.getElementById("logoutBtn").addEventListener("click", () => {
+        logoutUser();
+      });
+
+      // Fetch profile info and populate the page
+      async function loadProfile() {
+        try {
+          const response = await fetch("http://127.0.0.1:5000/api/profile", {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+              "Content-Type": "application/json",
+            },
+            credentials: "include",
+          });
+
+          const data = await response.json();
+
+          if (response.ok) {
+            // Inject profile info into the page
+            document.getElementById("username").textContent = data.username;
+            document.getElementById("profileUsername").textContent =
+              data.username;
+            document.getElementById("profileFullName").textContent =
+              data.full_name;
+          } else {
+            alert(data.error || "Failed to load profile.");
+          }
+        } catch (err) {
+          console.error("Error fetching profile:", err);
+          alert("Network error. Please try again later.");
+        }
+      }
+
+      // Call the function to load the profile data when the page loads
+      loadProfile();
+    </script>
+
+    <script type="module" src="/js/navbar.js" defer></script>
+  </body>
+</html>

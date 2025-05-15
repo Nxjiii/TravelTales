@@ -1,5 +1,5 @@
 import { updateNavbar } from "./navbar.js";
-
+import { clearToken } from "./authMiddleware.js";
 const API_BASE_URL = "http://127.0.0.1:5000/api";
 
 // --------------------------------LOGIN FUNCTION------------------------------------
@@ -36,6 +36,9 @@ export async function loginUser(email, password) {
     }
 
     localStorage.setItem("token", data.token);
+    document.cookie = `token=${data.token}; path=/; max-age=${
+      60 * 60 * 24 * 7
+    }`;
     if (data.api_key) {
       localStorage.setItem("api_key", data.api_key);
     }
@@ -82,6 +85,10 @@ export async function registerUser(email, password) {
     }
 
     localStorage.setItem("token", data.token);
+    document.cookie = `token=${data.token}; path=/; max-age=${
+      60 * 60 * 24 * 7
+    }`;
+
     if (data.api_key) {
       localStorage.setItem("api_key", data.api_key);
     }
@@ -95,7 +102,10 @@ export async function registerUser(email, password) {
 
 // ----------------------------------- Auth utls and logout -------------------------------------------
 export function getToken() {
-  return localStorage.getItem("token");
+  const localToken = localStorage.getItem("token");
+  if (localToken) return localToken;
+  const match = document.cookie.match(/(?:^|;\s*)token=([^;]*)/);
+  return match ? match[1] : null;
 }
 
 export async function logoutUser() {
@@ -119,9 +129,8 @@ export async function logoutUser() {
     console.error("Network error during logout:", err);
   }
 
-  // Clear token and api key from localStorage
-  localStorage.removeItem("token");
-  localStorage.removeItem("api_key");
+  // Clear token and api key from localStorage and cookies
+  clearToken();
 
   updateNavbar();
 

@@ -33,58 +33,80 @@ body {
 /* Login Form Container */
 .login-container {
   width: 100%;
-  max-width: 400px;
-  margin: 100px auto;
-  padding: 20px;
+  max-width: 360px;
+  margin: 0 auto;
+  padding: 50px 40px;
   background-color: #fff;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 0;
+  box-shadow: none;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.login-container h2 {
+  text-align: center;
+  font-size: 28px;
+  font-weight: 400;
+  margin-bottom: 40px;
+  color: #333;
 }
 
 form {
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 30px;
 }
 
 /* Form Groups */
 .form-group {
   display: flex;
   flex-direction: column;
+  position: relative;
 }
 
 label {
-  font-size: 14px;
-  margin-bottom: 5px;
+  font-size: 16px;
+  margin-bottom: 10px;
+  color: #666;
+  font-weight: 300;
 }
 
 input {
-  padding: 10px;
-  font-size: 14px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
+  padding: 14px 0;
+  font-size: 18px;
+  border: none;
+  border-bottom: 1px solid #ddd;
+  border-radius: 0;
   outline: none;
+  background: transparent;
+  transition: border-color 0.3s ease;
 }
 
 input:focus {
-  border-color: #0066cc;
-  box-shadow: 0 0 5px rgba(0, 102, 204, 0.3);
+  border-color: #000;
+  box-shadow: none;
 }
 
 /* Submit Button */
 button {
-  padding: 12px;
-  background-color: #0066cc;
+  padding: 16px;
+  background-color: #000;
   color: white;
-  font-size: 16px;
+  font-size: 18px;
+  font-weight: 500;
   border: none;
-  border-radius: 4px;
+  border-radius: 0;
   cursor: pointer;
   transition: background-color 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-top: 15px;
 }
 
 button:hover {
-  background-color: #0057b8;
+  background-color: #333;
 }
 
 button:focus {
@@ -94,77 +116,112 @@ button:focus {
 /* Bottom Section */
 p {
   text-align: center;
-  font-size: 14px;
+  font-size: 16px;
+  color: #666;
+  margin-top: 35px;
 }
 
 p a {
-  color: #0066cc;
+  color: #000;
   text-decoration: none;
+  font-weight: 500;
 }
 
 p a:hover {
   text-decoration: underline;
 }
 
-/* register */
+/* Error Message */
+#error-message {
+  color: #ff3333;
+  margin-top: 25px;
+  text-align: center;
+  font-size: 15px;
+}
+
+/* Register Form Container */
 .register-container {
-  max-width: 400px;
-  margin: 80px auto;
-  padding: 30px 25px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  background-color: #ffffff;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
-  font-family: Arial, sans-serif;
+  width: 100%;
+  max-width: 360px;
+  margin: 0 auto;
+  padding: 50px 40px;
+  background-color: #fff;
+  border-radius: 0;
+  box-shadow: none;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-family: inherit;
 }
 
 .register-container h2 {
   text-align: center;
-  margin-bottom: 25px;
+  font-size: 28px;
+  font-weight: 400;
+  margin-bottom: 40px;
   color: #333;
+}
+
+.register-container form {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
 }
 
 .register-container .form-group {
-  margin-bottom: 18px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  margin-bottom: 0;
 }
 
 .register-container label {
+  font-size: 16px;
+  margin-bottom: 10px;
+  color: #666;
+  font-weight: 300;
   display: block;
-  margin-bottom: 6px;
-  font-weight: 600;
-  color: #333;
 }
 
 .register-container input[type="email"],
 .register-container input[type="password"] {
+  padding: 14px 0;
+  font-size: 18px;
+  border: none;
+  border-bottom: 1px solid #ddd;
+  border-radius: 0;
+  outline: none;
+  background: transparent;
+  transition: border-color 0.3s ease;
   width: 100%;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
   box-sizing: border-box;
-  font-size: 14px;
 }
 
 .register-container input[type="email"]:focus,
 .register-container input[type="password"]:focus {
-  border-color: #007bff;
-  outline: none;
+  border-color: #000;
+  box-shadow: none;
 }
 
 .register-container button {
-  width: 100%;
-  padding: 12px;
-  background-color: #007bff;
-  border: none;
-  border-radius: 4px;
+  padding: 16px;
+  background-color: #000;
   color: white;
-  font-size: 15px;
+  font-size: 18px;
+  font-weight: 500;
+  border: none;
+  border-radius: 0;
   cursor: pointer;
-  transition: background-color 0.2s ease-in-out;
+  transition: background-color 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-top: 15px;
+  width: 100%;
 }
 
 .register-container button:hover {
-  background-color: #0056b3;
+  background-color: #333;
 }
 
 .register-container button:disabled {
@@ -172,15 +229,21 @@ p a:hover {
   cursor: not-allowed;
 }
 
+.register-container button:focus {
+  outline: none;
+}
+
 .register-container p {
   text-align: center;
-  margin-top: 20px;
-  font-size: 14px;
+  font-size: 16px;
+  color: #666;
+  margin-top: 35px;
 }
 
 .register-container a {
-  color: #007bff;
+  color: #000;
   text-decoration: none;
+  font-weight: 500;
 }
 
 .register-container a:hover {
@@ -188,12 +251,11 @@ p a:hover {
 }
 
 .register-container #error-message {
-  margin-top: 15px;
-  color: red;
-  font-size: 14px;
+  color: #ff3333;
+  margin-top: 25px;
   text-align: center;
+  font-size: 15px;
 }
-
 /* Navbar */
 
 #navbar {

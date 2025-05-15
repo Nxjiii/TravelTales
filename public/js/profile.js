@@ -1,34 +1,30 @@
 // public/js/profile.js
 import { authHeaders } from "./authMiddleware.js";
-import { protectPage } from "./authMiddleware.js";
 
 const API_BASE_URL = "http://127.0.0.1:5000/api";
 
-// Check auth first, before setting up any listeners or fetching
-if (!protectPage()) {
-  // Redirect is already handled inside protectPage
-  // No further code should run
-  throw new Error("Access denied. Redirecting...");
-}
-
 document.addEventListener("DOMContentLoaded", () => {
-  const usernameInput = document.getElementById("username");
-  const fullNameInput = document.getElementById("fullName");
+  const usernameSpan = document.getElementById("profileUsername");
+  const fullNameSpan = document.getElementById("profileFullName");
 
-  // fetch profile
   async function loadProfile() {
     try {
-      const response = await fetch(`${API_BASE_URL}/profile`, {
+      const response = await fetch("http://127.0.0.1:5000/api/profile", {
         method: "GET",
-        headers: authHeaders(),
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          "Content-Type": "application/json",
+        },
         credentials: "include",
       });
 
       const data = await response.json();
 
       if (response.ok) {
-        usernameInput.value = data.username;
-        fullNameInput.value = data.full_name;
+        // Inject profile info into the page
+        document.getElementById("username").textContent = data.username;
+        document.getElementById("profileUsername").textContent = data.username;
+        document.getElementById("profileFullName").textContent = data.full_name;
       } else {
         alert(data.error || "Failed to load profile.");
       }
@@ -38,5 +34,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
+  // Call the function to load the profile data when the page loads
   loadProfile();
 });

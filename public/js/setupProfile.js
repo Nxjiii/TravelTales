@@ -29,13 +29,18 @@ document.addEventListener("DOMContentLoaded", () => {
         credentials: "include",
       });
 
-      const data = await response.json();
+      let data = {};
+      try {
+        data = await response.json();
+      } catch (e) {
+        // If response is not JSON, ignore
+      }
 
       if (response.ok) {
         alert("Profile created successfully!");
         window.location.href = "/";
       } else {
-        alert(data.error || "Failed to create profile.");
+        alert((data && data.error) || "Failed to create profile.");
       }
     } catch (err) {
       console.error("Error creating profile:", err);

@@ -1,4 +1,5 @@
-// Check if the user is logged in
+import { getToken } from "./auth.js";
+
 export function isUserLoggedIn() {
   // Check localStorage first
   if (localStorage.getItem("token")) return true;
@@ -57,7 +58,7 @@ export async function fetchWithAuth(url, options = {}) {
 
   if (response.status === 401) {
     alert("Session expired. Please log in again.");
-    logoutUser(); // Clear token and redirect
+    logoutUser();
     throw new Error("Unauthorised");
   }
 
@@ -83,7 +84,7 @@ export function checkTokenExpiry() {
   const match = document.cookie.match(/(?:^|;\s*)token=([^;]*)/);
   const cookieToken = match ? match[1] : null;
 
-  // Only proceed if tokens match (or only localStorage is present)
+  // Only proceed if tokens match or only localStorage is present
   if (!cookieToken || localToken === cookieToken) {
     try {
       const payloadBase64 = localToken.split(".")[1];

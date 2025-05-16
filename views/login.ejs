@@ -58,12 +58,13 @@
             console.error("Login error:", err);
             errorMsg.textContent = err.message || "Login failed";
           } finally {
-            // Restore button state if we're still on this page
+            // Restore button state if still on this page
             const submitBtn = document.getElementById("submitButton");
             submitBtn.textContent = "Login";
             submitBtn.disabled = false;
           }
         });
     </script>
+    <script type="module" src="/js/navbar.js" defer></script>
   </body>
 </html>

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Follow List</title>
+    <link rel="stylesheet" href="/styles/styles.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+  </head>
+  <body>
+    <%- include("partials/navbar") %>
+    <main class="container">
+      <h1 style="margin-top: 2rem">
+        <i class="fas fa-user-friends"></i> Your Follow List
+      </h1>
+      <section
+        class="follow-list-section"
+        style="display: flex; gap: 2rem; margin-top: 2rem"
+      >
+        <div class="followers-list-block" style="flex: 1">
+          <h2>Followers</h2>
+          <ul id="followersList"></ul>
+        </div>
+        <div class="following-list-block" style="flex: 1">
+          <h2>Following</h2>
+          <ul id="followingList"></ul>
+        </div>
+      </section>
+      <script type="module" src="/js/follow.js"></script>
+      <script type="module" src="/js/followlist.js"></script>
+      <script type="module" src="/js/navbar.js" defer></script>
+    </main>
+  </body>
+</html>

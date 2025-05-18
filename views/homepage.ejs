@@ -5,16 +5,150 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title><%= title %></title>
     <link rel="stylesheet" href="/styles/styles.css" />
-</head>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+  </head>
   <body class="homepage">
-    <header>
-      <h1>Welcome to TravelTales!</h1>
+    <header class="site-header">
+      <div class="header-content">
+        <h1><i class="fas fa-globe-americas"></i> TravelTales</h1>
+        <p class="tagline">Explore the world through travelers' stories</p>
+      </div>
     </header>
+
     <main>
-      <p>Hello, welcome to the homepage!</p>
+      <section id="blogsContainer">
+        <div class="section-header">
+          <h2>Recent Adventures</h2>
+          <div class="view-options">
+            <button id="gridViewBtn" class="view-btn active" title="Grid View">
+              <i class="fas fa-th-large"></i>
+            </button>
+            <button id="listViewBtn" class="view-btn" title="List View">
+              <i class="fas fa-list"></i>
+            </button>
+            <a href="/createBlog" class="create-blog-btn">
+              <i class="fas fa-plus"></i> Create Blog
+            </a>
+          </div>
+        </div>
+        <div class="country-filter-group">
+          <label for="countryFilter" class="country-filter-label"
+            >Filter by Country:</label
+          >
+          <select
+            id="countryFilter"
+            class="country-filter-select"
+            size="1"
+          ></select>
+        </div>
+        <div id="blogPostsList" class="grid-view"></div>
+
+        <div class="loading-indicator">
+          <div class="spinner"></div>
+          <p>Loading travel stories...</p>
+        </div>
+      </section>
+
+      <template id="blog-card-template">
+        <article class="blog-post">
+          <div class="post-header">
+            <h2 class="post-title"></h2>
+          </div>
+          <div class="post-meta">
+            <span class="author"
+              ><i class="fas fa-user"></i> <span class="author-name"></span
+            ></span>
+            <span class="location"
+              ><i class="fas fa-map-marker-alt"></i>
+              <span class="country-name"></span
+            ></span>
+            <span class="visit-date"
+              ><i class="fas fa-calendar-alt"></i> <span class="date"></span
+            ></span>
+          </div>
+          <div class="post-body">
+            <p class="post-content"></p>
+            <div class="post-footer">
+              <small class="post-updated"
+                ><i class="fas fa-clock"></i> <span class="update-time"></span
+              ></small>
+              <a href="/BlogPage" class="read-more"
+                >Read more <i class="fas fa-arrow-right"></i
+              ></a>
+            </div>
+          </div>
+        </article>
+      </template>
     </main>
-    <footer>
-      <p>&copy; 2025 TravelTales. All rights reserved.</p>
-    </footer>
+
+    <%- include("partials/navbar") %>
+
+    <script type="module" src="/js/navbar.js" defer></script>
+    <script type="module" src="/js/Blogs.js" defer></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        // View switching
+        const gridViewBtn = document.getElementById("gridViewBtn");
+        const listViewBtn = document.getElementById("listViewBtn");
+        const blogPostsList = document.getElementById("blogPostsList");
+
+        gridViewBtn.addEventListener("click", () => {
+          blogPostsList.className = "grid-view";
+          gridViewBtn.classList.add("active");
+          listViewBtn.classList.remove("active");
+          localStorage.setItem("blogViewPreference", "grid");
+        });
+
+        listViewBtn.addEventListener("click", () => {
+          blogPostsList.className = "list-view";
+          listViewBtn.classList.add("active");
+          gridViewBtn.classList.remove("active");
+          localStorage.setItem("blogViewPreference", "list");
+        });
+
+        const viewPreference = localStorage.getItem("blogViewPreference");
+        if (viewPreference === "list") {
+          listViewBtn.click();
+        }
+
+        const loadingIndicator = document.querySelector(".loading-indicator");
+        loadingIndicator.style.display = "flex";
+
+        window.addEventListener("load", () => {
+          setTimeout(() => {
+            loadingIndicator.style.display = "none";
+          }, 500);
+        });
+
+        function truncatePostContent() {
+          document.querySelectorAll(".post-content").forEach((content) => {
+            if (content.textContent.length > 150) {
+              content.dataset.fullContent = content.textContent;
+              content.textContent =
+                content.textContent.substring(0, 150) + "...";
+            }
+          });
+        }
+
+        // Execute after posts are loaded
+        const observer = new MutationObserver((mutations) => {
+          for (const mutation of mutations) {
+            if (mutation.addedNodes.length) {
+              truncatePostContent();
+              observer.disconnect();
+              loadingIndicator.style.display = "none";
+            }
+          }
+        });
+
+        observer.observe(document.getElementById("blogPostsList"), {
+          childList: true,
+          subtree: true,
+        });
+      });
+    </script>
   </body>
 </html>

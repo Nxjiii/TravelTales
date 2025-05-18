@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Blog Post</title>
+    <link rel="stylesheet" href="/styles/styles.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+  </head>
+  <body>
+    <main>
+      <section id="blogPostContainer">
+        <div class="loading-indicator">
+          <div class="spinner"></div>
+          <p>Loading blog post...</p>
+        </div>
+        <article id="blogPost" class="blog-post" style="display: none">
+          <div class="post-header">
+            <h2 class="post-title"></h2>
+          </div>
+          <div class="post-meta">
+            <span class="author"
+              ><i class="fas fa-user"></i> <span class="author-name"></span
+            ></span>
+            <span class="location"
+              ><i class="fas fa-map-marker-alt"></i>
+              <span class="country-name"></span
+            ></span>
+            <span class="visit-date"
+              ><i class="fas fa-calendar-alt"></i> <span class="date"></span
+            ></span>
+          </div>
+          <div class="post-body">
+            <p class="post-content"></p>
+            <div class="post-footer">
+              <small class="post-updated"
+                ><i class="fas fa-clock"></i> <span class="update-time"></span
+              ></small>
+            </div>
+          </div>
+        </article>
+        <div
+          id="blogPostError"
+          style="display: none; color: var(--accent-color); margin-top: 2rem"
+        ></div>
+      </section>
+    </main>
+    <%- include("partials/navbar") %>
+    <script type="module">
+      import { fetchBlogPostById } from "/js/Blogs.js";
+
+      function getQueryParam(name) {
+        const url = new URL(window.location.href);
+        return url.searchParams.get(name);
+      }
+
+      document.addEventListener("DOMContentLoaded", async () => {
+        const postId = getQueryParam("id");
+        const loading = document.querySelector(".loading-indicator");
+        const postEl = document.getElementById("blogPost");
+        const errorEl = document.getElementById("blogPostError");
+
+        if (!postId) {
+          loading.style.display = "none";
+          errorEl.textContent = "No blog post specified.";
+          errorEl.style.display = "block";
+          return;
+        }
+
+        try {
+          const post = await fetchBlogPostById(postId);
+          loading.style.display = "none";
+          postEl.style.display = "block";
+
+          postEl.querySelector(".post-title").textContent = post.title;
+          postEl.querySelector(".author-name").textContent = post.username;
+          postEl.querySelector(".country-name").textContent = post.country;
+          postEl.querySelector(".date").textContent = new Date(
+            post.date_of_visit
+          ).toLocaleDateString();
+          postEl.querySelector(".update-time").textContent = new Date(
+            post.updated_at
+          ).toLocaleString();
+          postEl.querySelector(".post-content").textContent = post.content;
+        } catch (err) {
+          loading.style.display = "none";
+          errorEl.textContent = "Failed to load blog post.";
+          errorEl.style.display = "block";
+        }
+      });
+    </script>
+  </body>
+</html>

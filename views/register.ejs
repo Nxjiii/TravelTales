@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Register</title>
+    <link rel="stylesheet" href="/styles/styles.css" />
+  </head>
+  <body>
+    <%- include("partials/navbar") %>
+
+    <div class="register-container">
+      <h2>Register</h2>
+      <form id="registerForm">
+        <div class="form-group">
+          <label for="email">Email:</label>
+          <input type="email" id="email" name="email" required />
+        </div>
+
+        <div class="form-group">
+          <label for="password">Password:</label>
+          <input type="password" id="password" name="password" required />
+        </div>
+
+        <button type="submit" id="submitButton">Register</button>
+      </form>
+      <p>Already have an account? <a href="/login">Login here</a></p>
+      <div id="error-message" style="color: red; margin-top: 15px"></div>
+    </div>
+
+    <script type="module">
+      import { registerUser } from "/js/auth.js";
+
+      document
+        .getElementById("registerForm")
+        .addEventListener("submit", async (e) => {
+          e.preventDefault();
+
+          const errorMsg = document.getElementById("error-message");
+          errorMsg.textContent = "";
+
+          try {
+            const email = document.getElementById("email").value;
+            const password = document.getElementById("password").value;
+
+            if (!email || !password) {
+              errorMsg.textContent = "Please enter both email and password";
+              return;
+            }
+
+            const submitBtn = document.getElementById("submitButton");
+            const originalText = submitBtn.textContent;
+            submitBtn.textContent = "Registering...";
+            submitBtn.disabled = true;
+
+            await registerUser(email, password);
+          } catch (err) {
+            console.error("Registration error:", err);
+            errorMsg.textContent = err.message || "Registration failed";
+          } finally {
+            const submitBtn = document.getElementById("submitButton");
+            submitBtn.textContent = "Register";
+            submitBtn.disabled = false;
+          }
+        });
+    </script>
+    <script type="module" src="/js/navbar.js" defer></script>
+  </body>
+</html>
